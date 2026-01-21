@@ -1,0 +1,202 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  username      String?
+  avatarUrl     String?   @map("avatar_url")
+  emailVerified Boolean   @default(false) @map("email_verified")
+  role          String    @default("user") // user, admin
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  sites            Site[]
+  comments         Comment[]
+  emailVerifications EmailVerification[]
+  favorites        SiteFavorite[]
+
+  @@index([role]) // 按角色查询用户
+  @@index([createdAt]) // 按创建时间排序
+  @@map("users")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String   @unique
+  icon      String?
+  parentId  Int?     @map("parent_id")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  parent   Category?  @relation("CategoryChildren", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryChildren")
+  sites    Site[]
+
+  @@index([parentId]) // 查询子分类
+  @@index([sortOrder]) // 按排序查询
+  @@map("categories")
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  color     String?  // 标签颜色
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  sites SiteTag[]
+
+  @@map("tags")
+}
+
+model SiteTag {
+  siteId    String   @map("site_id")
+  tagId     Int      @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([siteId, tagId])
+  @@index([tagId]) // 按标签查询站点
+  @@map("site_tags")
+}
+
+model Site {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  richContent String?  @map("rich_content") // 富文本内容
+  url         String
+  secondUrl   String?  @map("second_url") // 第二个链接
+  logoUrl     String?  @map("logo_url")
+  categoryId  Int      @map("category_id")
+  userId      String?  @map("user_id") // 可选，访客投稿时为空
+  status      String   @default("pending") // pending, approved, rejected
+  commentsEnabled Boolean @default(true) @map("comments_enabled") // 评论开关
+  hasAndroidApp Boolean @default(false) @map("has_android_app") // 有安卓应用
+  hasIosApp     Boolean @default(false) @map("has_ios_app") // 有iOS应用
+  isNsfw        Boolean @default(false) @map("is_nsfw") // NSFW 内容标记
+  sortOrder   Int      @default(0) @map("sort_order") // 排序数字，越小越靠前
+  viewCount   Int      @default(0) @map("view_count")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  category  Category   @relation(fields: [categoryId], references: [id])
+  user      User?      @relation(fields: [userId], references: [id])
+  comments  Comment[]
+  favorites SiteFavorite[]
+  visits    SiteVisit[]
+  tags      SiteTag[]
+
+  @@index([status]) // 按状态筛选（最常用）
+  @@index([categoryId]) // 按分类查询
+  @@index([userId]) // 按用户查询
+  @@index([createdAt]) // 按创建时间排序
+  @@index([status, categoryId]) // 组合索引：状态+分类
+  @@index([status, createdAt]) // 组合索引：状态+时间
+  @@index([isNsfw]) // NSFW 过滤
+  @@index([sortOrder]) // 按排序查询
+  @@map("sites")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  siteId    String   @map("site_id")
+  userId    String   @map("user_id")
+  content   String
+  parentId  String?  @map("parent_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  site   Site  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies Comment[] @relation("CommentReplies")
+
+  @@index([siteId]) // 按站点查询评论
+  @@index([userId]) // 按用户查询评论
+  @@index([parentId]) // 查询回复
+  @@index([siteId, createdAt]) // 组合索引：站点+时间
+  @@map("comments")
+}
+
+model EmailVerification {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_verifications")
+}
+
+model Setting {
+  key   String @id
+  value String
+  type  String @default("string") // string, number, boolean, json
+
+  @@map("settings")
+}
+
+model SiteFavorite {
+  userId    String   @map("user_id")
+  siteId    String   @map("site_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@id([userId, siteId])
+  @@map("site_favorites")
+}
+
+model SiteVisit {
+  id        String   @id @default(cuid())
+  siteId    String   @map("site_id")
+  deviceType String  @map("device_type") // pc, mobile
+  visitDate DateTime @map("visit_date") @db.Date
+  count     Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, deviceType, visitDate])
+  @@index([siteId, visitDate]) // 按站点和日期查询
+  @@map("site_visits")
+}
+
+// 图片记录
+model Image {
+  id          String   @id @default(cuid())
+  url         String   @unique // 图片 URL
+  filename    String   // 原始文件名
+  size        Int      // 文件大小（字节）
+  mimeType    String   @map("mime_type") // MIME 类型
+  storageType String   @map("storage_type") // local 或 s3
+  usageType   String   @map("usage_type") // site_logo, rich_content, setting
+  usageId     String?  @map("usage_id") // 关联的资源 ID（如网站 ID）
+  userId      String?  @map("user_id") // 上传用户 ID
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([usageType]) // 按用途查询
+  @@index([usageId]) // 按关联资源查询
+  @@index([createdAt]) // 按创建时间查询
+  @@map("images")
+}
