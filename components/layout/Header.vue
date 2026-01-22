@@ -31,7 +31,7 @@
         </div>
         <!-- 名称 -->
         <span class="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white uppercase whitespace-nowrap">
-          {{ siteSettings.siteName || 'YuzuACG' }}<span v-if="siteSettings.siteSubtitle" class="text-slate-400">{{ siteSettings.siteSubtitle }}</span>
+          {{ siteSettings.siteName || 'YuzuNav' }}<span v-if="siteSettings.siteSubtitle" class="text-slate-400">{{ siteSettings.siteSubtitle }}</span>
         </span>
       </NuxtLink>
 
@@ -272,7 +272,7 @@ const userInfo = ref({
 })
 
 const siteSettings = ref({
-  siteName: 'YuzuACG',
+  siteName: 'YuzuNav',
   siteSubtitle: '',
   siteIcon: '',
   siteIconType: 'text',

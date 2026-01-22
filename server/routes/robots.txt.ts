@@ -2,7 +2,7 @@ export default defineEventHandler((event) => {
   const config = useRuntimeConfig()
   const baseUrl = config.appUrl || 'http://localhost:3000'
 
-  const robots = `# robots.txt for YuzuACG
+  const robots = `# robots.txt for YuzuNav
 User-agent: *
 Allow: /
 Disallow: /admin

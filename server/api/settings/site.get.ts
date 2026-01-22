@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
 
   // 默认值（优先级最低）
   const defaults: Record<string, any> = {
-    siteName: 'YuzuACG',
+    siteName: 'YuzuNav',
     siteSubtitle: '',
     siteIcon: '',
     siteIconType: 'text',

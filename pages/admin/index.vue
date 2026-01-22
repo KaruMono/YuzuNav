@@ -20,7 +20,7 @@
             <span v-else>{{ brandTextPreview }}</span>
           </div>
           <div>
-            <div class="font-black text-lg text-slate-900 dark:text-white">{{ brandingForm.siteName || 'YuzuACG' }}</div>
+            <div class="font-black text-lg text-slate-900 dark:text-white">{{ brandingForm.siteName || 'YuzuNav' }}</div>
             <div class="text-xs text-slate-400">管理控制台</div>
           </div>
         </NuxtLink>
@@ -442,7 +442,7 @@
                     <span v-else>{{ brandTextPreview }}</span>
           </div>
                   <span class="text-lg font-black tracking-tight text-slate-900 dark:text-white uppercase">
-                    {{ brandingForm.siteName || 'YuzuACG' }}<span v-if="brandingForm.siteSubtitle" class="text-slate-400">{{ brandingForm.siteSubtitle }}</span>
+                    {{ brandingForm.siteName || 'YuzuNav' }}<span v-if="brandingForm.siteSubtitle" class="text-slate-400">{{ brandingForm.siteSubtitle }}</span>
                   </span>
         </div>
       </div>
@@ -451,7 +451,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
                   <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">网站名称</label>
-                  <input v-model="brandingForm.siteName" type="text" class="w-full bg-slate-100 dark:bg-slate-700 border-none rounded-md py-3 px-4 text-sm" placeholder="例如: YuzuACG" />
+                  <input v-model="brandingForm.siteName" type="text" class="w-full bg-slate-100 dark:bg-slate-700 border-none rounded-md py-3 px-4 text-sm" placeholder="例如: YuzuNav" />
                 </div>
                 <div>
                   <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">副标题 (可选)</label>
@@ -553,7 +553,7 @@
                   v-model="footerHtml"
                   rows="8"
                   class="w-full bg-slate-100 dark:bg-slate-700 border-none rounded-md py-3 px-4 text-sm font-mono"
-                  placeholder="<p>© 2024 YuzuACG. All rights reserved.</p>&#10;<p>Powered by <a href='#'>YuzuNav</a></p>"
+                  placeholder="<p>© 2024 YuzuNav. All rights reserved.</p>&#10;<p>Powered by <a href='#'>YuzuNav</a></p>"
                 ></textarea>
                 <p class="text-xs text-slate-400 mt-2">支持 HTML 代码，可以添加链接、版权信息等</p>
               </div>
@@ -1246,7 +1246,7 @@ const getCdnProviderLabel = (provider: string): string => {
 }
 
 // 品牌设置
-const brandingForm = ref({ siteName: 'YuzuACG', siteSubtitle: '', siteIcon: '', siteIconType: 'text', siteIconColor: '#1e293b', siteLogoUrl: '' })
+const brandingForm = ref({ siteName: 'YuzuNav', siteSubtitle: '', siteIcon: '', siteIconType: 'text', siteIconColor: '#1e293b', siteLogoUrl: '' })
 const brandingLoading = ref(false)
 const brandingMessage = ref('')
 const brandingSuccess = ref(false)

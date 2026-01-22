@@ -11,7 +11,7 @@
     <div v-else class="text-slate-400 text-[10px] sm:text-xs">
       <p class="font-bold mb-2">© {{ currentYear }} {{ siteName }}</p>
       <p class="text-slate-300 dark:text-slate-600">
-        由 <a href="https://github.com/YuzuACG/YuzuNav" target="_blank" class="hover:text-slate-500 dark:hover:text-slate-400 transition-colors">YuzuNav</a> 强力驱动
+        由 <a href="https://github.com/KaruMono/YuzuNav" target="_blank" class="hover:text-slate-500 dark:hover:text-slate-400 transition-colors">YuzuNav</a> 强力驱动
       </p>
     </div>
   </footer>
@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 const footerHtml = ref('')
-const siteName = ref('YuzuACG')
+const siteName = ref('YuzuNav')
 const currentYear = new Date().getFullYear()
 
 const loadSiteSettings = async () => {
@@ -27,7 +27,7 @@ const loadSiteSettings = async () => {
     const response = await $fetch<{ success: boolean; data: any }>('/api/settings/site')
     if (response.data) {
       footerHtml.value = response.data.footerHtml || ''
-      siteName.value = response.data.siteName || 'YuzuACG'
+      siteName.value = response.data.siteName || 'YuzuNav'
     }
   } catch (error) {
     console.error('Failed to load site settings:', error)

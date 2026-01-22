@@ -115,7 +115,7 @@ SMTP_PORT="587"
 SMTP_SECURE="false"
 SMTP_USER="your-email@gmail.com"
 SMTP_PASSWORD="your-app-password"
-SMTP_FROM="YuzuACG <your-email@gmail.com>"
+SMTP_FROM="YuzuNav <your-email@gmail.com>"
 ```
 
 **使用其他邮件服务：**
@@ -127,7 +127,7 @@ SMTP_PORT="587"
 SMTP_SECURE="false"
 SMTP_USER="your-qq@qq.com"
 SMTP_PASSWORD="授权码"  # 在QQ邮箱设置中获取
-SMTP_FROM="YuzuACG <your-qq@qq.com>"
+SMTP_FROM="YuzuNav <your-qq@qq.com>"
 ```
 
 - **163 邮箱**:
@@ -137,7 +137,7 @@ SMTP_PORT="465"
 SMTP_SECURE="true"
 SMTP_USER="your-email@163.com"
 SMTP_PASSWORD="授权码"
-SMTP_FROM="YuzuACG <your-email@163.com>"
+SMTP_FROM="YuzuNav <your-email@163.com>"
 ```
 
 #### 4.4 应用配置

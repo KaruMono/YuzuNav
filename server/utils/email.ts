@@ -29,12 +29,12 @@ export async function sendVerificationEmail(
   const mailOptions = {
     from: config.smtpFrom,
     to: email,
-    subject: '验证您的邮箱 - YuzuACG',
+    subject: '验证您的邮箱 - YuzuNav',
     html: `
       <div style="font-family: 'Inter', 'Noto Sans SC', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #0f172a; font-size: 24px; margin-bottom: 20px;">欢迎注册 YuzuACG</h1>
+        <h1 style="color: #0f172a; font-size: 24px; margin-bottom: 20px;">欢迎注册 YuzuNav</h1>
         <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-          感谢您注册 YuzuACG！请点击下面的链接验证您的邮箱地址：
+          感谢您注册 YuzuNav！请点击下面的链接验证您的邮箱地址：
         </p>
         <div style="text-align: center; margin: 30px 0;">
           <a href="${verifyUrl}" 
@@ -67,7 +67,7 @@ export async function sendPasswordResetEmail(
   const mailOptions = {
     from: config.smtpFrom,
     to: email,
-    subject: '重置您的密码 - YuzuACG',
+    subject: '重置您的密码 - YuzuNav',
     html: `
       <div style="font-family: 'Inter', 'Noto Sans SC', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <h1 style="color: #0f172a; font-size: 24px; margin-bottom: 20px;">重置密码</h1>
