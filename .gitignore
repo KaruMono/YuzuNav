@@ -36,7 +36,6 @@ coverage/
 # 本地上传文件（忽略内容但保留目录）
 uploads/*
 !uploads/.gitkeep
-public/uploads/
 
 # Prisma
 prisma/*.db
