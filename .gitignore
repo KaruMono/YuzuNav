@@ -33,8 +33,9 @@ Thumbs.db
 coverage/
 .nyc_output/
 
-# 本地上传文件
-uploads/
+# 本地上传文件（忽略内容但保留目录）
+uploads/*
+!uploads/.gitkeep
 public/uploads/
 
 # Prisma
