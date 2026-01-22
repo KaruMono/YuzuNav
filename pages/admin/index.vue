@@ -1168,7 +1168,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: false })
+definePageMeta({ layout: 'admin' })
 
 const { isAdmin } = useAuth()
 const toast = useToast()
