@@ -90,6 +90,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin',
+})
+
 const route = useRoute()
 const { getSiteName, loadSettings } = useSiteSettings()
 

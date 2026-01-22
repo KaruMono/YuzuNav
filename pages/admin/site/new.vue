@@ -349,21 +349,6 @@
         </div>
       </div>
 
-      <!-- 错误提示 -->
-      <div v-if="errorMessage" class="mt-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
-        <div class="flex items-center space-x-3">
-          <i class="fas fa-exclamation-circle text-red-500"></i>
-          <span class="text-sm text-red-700 dark:text-red-400">{{ errorMessage }}</span>
-        </div>
-      </div>
-
-      <!-- 成功提示 -->
-      <div v-if="successMessage" class="mt-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
-        <div class="flex items-center space-x-3">
-          <i class="fas fa-check-circle text-green-500"></i>
-          <span class="text-sm text-green-700 dark:text-green-400">{{ successMessage }}</span>
-        </div>
-      </div>
     </main>
   </div>
 </template>
@@ -371,10 +356,12 @@
 <script setup lang="ts">
 definePageMeta({
   middleware: 'auth',
+  layout: 'admin',
 })
 
 const router = useRouter()
 const { isAdmin } = useAuth()
+const toast = useToast()
 
 // 表单数据
 const form = ref({
@@ -566,8 +553,6 @@ const insertBBCode = (tag: string) => {
 const saving = ref(false)
 const fetchingIcon = ref(false)
 const uploadingIcon = ref(false)
-const errorMessage = ref('')
-const successMessage = ref('')
 
 // 加载分类
 const loadCategories = async () => {
@@ -592,13 +577,11 @@ const loadTags = async () => {
 // 自动抓取图标
 const fetchIcon = async () => {
   if (!form.value.url) {
-    errorMessage.value = '请先填写网站链接'
+    toast.error('请先填写网站链接')
     return
   }
 
   fetchingIcon.value = true
-  errorMessage.value = ''
-  successMessage.value = ''
 
   try {
     const response = await $fetch<{ success: boolean; url: string }>('/api/sites/fetch-icon', {
@@ -608,10 +591,10 @@ const fetchIcon = async () => {
 
     if (response.url) {
       form.value.logoUrl = response.url
-      successMessage.value = '图标抓取成功！'
+      toast.success('图标抓取成功！')
     }
   } catch (error: any) {
-    errorMessage.value = error.data?.message || '图标抓取失败，请尝试手动上传'
+    toast.error(error.data?.message || '图标抓取失败，请尝试手动上传')
   } finally {
     fetchingIcon.value = false
   }
@@ -624,13 +607,11 @@ const uploadIcon = async (event: Event) => {
 
   const file = input.files[0]
   if (!file.type.startsWith('image/')) {
-    errorMessage.value = '请选择图片文件'
+    toast.error('请选择图片文件')
     return
   }
 
   uploadingIcon.value = true
-  errorMessage.value = ''
-  successMessage.value = ''
 
   try {
     const formData = new FormData()
@@ -643,10 +624,10 @@ const uploadIcon = async (event: Event) => {
 
     if (response.url) {
       form.value.logoUrl = response.url
-      successMessage.value = '图标上传成功！'
+      toast.success('图标上传成功！')
     }
   } catch (error: any) {
-    errorMessage.value = error.data?.message || '上传失败'
+    toast.error(error.data?.message || '上传失败')
   } finally {
     uploadingIcon.value = false
     input.value = ''
@@ -656,13 +637,11 @@ const uploadIcon = async (event: Event) => {
 // 保存网站
 const handleSave = async () => {
   if (!form.value.title || !form.value.url || !form.value.categoryId) {
-    errorMessage.value = '请填写必填字段：网站名称、主链接、分类'
+    toast.error('请填写必填字段：网站名称、主链接、分类')
     return
   }
 
   saving.value = true
-  errorMessage.value = ''
-  successMessage.value = ''
 
   try {
     // 先创建新标签
@@ -703,14 +682,14 @@ const handleSave = async () => {
       },
     })
 
-    successMessage.value = '网站创建成功！'
+    toast.success('网站创建成功！')
     
     // 跳转回网站列表
     setTimeout(() => {
-      router.push('/admin?tab=sites')
+      router.push('/admin?tab=manage-sites')
     }, 1000)
   } catch (error: any) {
-    errorMessage.value = error.data?.message || '保存失败'
+    toast.error(error.data?.message || '保存失败')
   } finally {
     saving.value = false
   }

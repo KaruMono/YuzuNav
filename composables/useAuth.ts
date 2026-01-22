@@ -1,6 +1,7 @@
 export const useAuth = () => {
   const user = useState<User | null>('auth.user', () => null)
   const token = useState<string | null>('auth.token', () => null)
+  const initialized = useState<boolean>('auth.initialized', () => false)
 
   const isAuthenticated = computed(() => !!user.value)
   const isAdmin = computed(() => user.value?.role === 'admin')
@@ -15,7 +16,7 @@ export const useAuth = () => {
       user.value = response.user
       token.value = response.token
       
-      // 保存 token 到 localStorage
+      // 保存 token 到 localStorage（作为备份）
       if (process.client) {
         localStorage.setItem('auth-token', response.token)
       }
@@ -62,7 +63,10 @@ export const useAuth = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await $fetch<{ success: boolean; user: User }>('/api/auth/me')
+      const response = await $fetch<{ success: boolean; user: User }>('/api/auth/me', {
+        // 确保发送 credentials（cookie）
+        credentials: 'include',
+      })
       user.value = response.user
       return response.user
     } catch (error) {
@@ -76,13 +80,12 @@ export const useAuth = () => {
   }
 
   const initAuth = async () => {
-    if (process.client) {
-      const storedToken = localStorage.getItem('auth-token')
-      if (storedToken) {
-        token.value = storedToken
-        await fetchUser()
-      }
-    }
+    // 避免重复初始化
+    if (initialized.value) return
+    
+    // 尝试从 cookie 获取用户信息（httpOnly cookie 会自动发送）
+    await fetchUser()
+    initialized.value = true
   }
 
   return {

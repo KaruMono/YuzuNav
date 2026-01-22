@@ -4,6 +4,16 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
   css: ['~/assets/css/main.css'],
+  nitro: {
+    // 配置静态资源目录
+    publicAssets: [
+      {
+        dir: 'uploads',
+        baseURL: '/uploads',
+        maxAge: 60 * 60 * 24 * 7, // 7天缓存
+      },
+    ],
+  },
   runtimeConfig: {
     // 私有配置（仅在服务端可用）
     jwtSecret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',

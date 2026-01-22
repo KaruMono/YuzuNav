@@ -301,6 +301,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin',
+})
+
 const router = useRouter()
 const { isAuthenticated } = useAuth()
 const { getSiteName, loadSettings: loadSiteSettings } = useSiteSettings()
