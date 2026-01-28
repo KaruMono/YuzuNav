@@ -212,7 +212,7 @@ npm install -g pm2
 2. 启动应用：
 
 ```bash
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 pm2 save
 pm2 startup
 ```

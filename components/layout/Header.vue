@@ -128,6 +128,8 @@
         <button
           @click="handleToggleTheme"
           class="w-9 h-9 flex items-center justify-center rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors overflow-hidden"
+          :title="isDark ? '切换到浅色模式' : '切换到深色模式'"
+          :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
         >
           <Transition name="theme-icon" mode="out-in">
             <i v-if="isDark" key="moon" class="fas fa-moon text-base text-indigo-400"></i>
