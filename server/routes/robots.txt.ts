@@ -7,6 +7,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
+Disallow: /go/
 Disallow: /login
 Disallow: /register
 Disallow: /favorites

@@ -350,7 +350,21 @@ useHead(() => {
   }
   
   const title = `${site.value.title} - ${siteName}`
-  const description = site.value.description || `${site.value.title} - 网站详情与介绍`
+  // 生成更丰富的 description
+  let description = site.value.description
+  if (!description) {
+    const categoryName = site.value.category?.name
+    const tagNames = site.value.tags?.map((t: any) => t.name).slice(0, 3).join('、')
+    if (categoryName && tagNames) {
+      description = `${site.value.title} - ${categoryName}类网站，涵盖${tagNames}等内容，收录于${siteName}`
+    } else if (categoryName) {
+      description = `${site.value.title} - ${categoryName}类优质网站，收录于${siteName}`
+    } else if (tagNames) {
+      description = `${site.value.title} - 涵盖${tagNames}等内容的优质网站，收录于${siteName}`
+    } else {
+      description = `${site.value.title} - 优质网站推荐，收录于${siteName}`
+    }
+  }
   const image = site.value.logoUrl || ''
   const url = site.value.url || ''
   

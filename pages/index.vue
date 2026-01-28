@@ -327,6 +327,8 @@
     <NuxtLink
       to="/submit"
       class="lg:hidden fixed bottom-6 right-6 w-14 h-14 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center shadow-lg hover:shadow-xl transition-all z-40"
+      aria-label="投稿网站"
+      title="投稿网站"
     >
       <i class="fas fa-paper-plane text-lg"></i>
     </NuxtLink>
@@ -337,7 +339,19 @@
 const route = useRoute()
 const { mobileMenuOpen, closeMenu } = useMobileMenu()
 const { nsfwMode, initNsfwMode } = useNsfwMode()
+const { getSiteName, loadSettings: loadSiteSettings } = useSiteSettings()
 const activeCategory = ref<number | null>(null)
+
+// 加载网站设置
+loadSiteSettings()
+
+// SEO
+useHead(() => ({
+  title: getSiteName.value,
+  meta: [
+    { name: 'description', content: `${getSiteName.value} - 精选优质网站导航，发现更多有趣的网站资源` },
+  ],
+}))
 const searchQuery = ref('')
 const searchResults = ref<any[]>([])
 const isSearching = ref(false)

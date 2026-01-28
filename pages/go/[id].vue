@@ -106,7 +106,7 @@ loadSettings()
 
 // SEO - 不让搜索引擎索引跳转页
 useHead(() => ({
-  title: site.value ? `正在前往 ${site.value.title}` : '跳转中...',
+  title: site.value ? `正在前往 ${site.value.title} - ${getSiteName.value}` : `跳转中... - ${getSiteName.value}`,
   meta: [
     { name: 'robots', content: 'noindex, nofollow' },
     { name: 'description', content: '页面跳转中...' },

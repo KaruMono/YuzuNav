@@ -45,7 +45,19 @@ definePageMeta({
 })
 
 const route = useRoute()
+const { getSiteName, loadSettings: loadSiteSettings } = useSiteSettings()
 const loading = ref(true)
+
+// 加载网站设置
+loadSiteSettings()
+
+// SEO
+useHead(() => ({
+  title: `邮箱验证 - ${getSiteName.value}`,
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
+}))
 const success = ref(false)
 const error = ref('')
 

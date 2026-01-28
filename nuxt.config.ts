@@ -42,6 +42,8 @@ export default defineNuxtConfig({
       seoKeywords: process.env.SEO_KEYWORDS || '',
       faviconUrl: process.env.FAVICON_URL || '',
       appleTouchIconUrl: process.env.APPLE_TOUCH_ICON_URL || '',
+      // 字体配置
+      disableGoogleFonts: process.env.DISABLE_GOOGLE_FONTS === 'true',
     }
   },
   app: {

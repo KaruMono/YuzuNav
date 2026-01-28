@@ -6,6 +6,7 @@
         v-if="isHomePage"
         @click="toggleMenu"
         class="lg:hidden w-10 h-10 flex items-center justify-center rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+        aria-label="打开菜单"
       >
         <i class="fas fa-bars text-lg text-slate-700 dark:text-slate-300"></i>
       </button>
@@ -64,6 +65,7 @@
           <button
             class="w-9 h-9 flex items-center justify-center rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
             :title="getModeLabel"
+            :aria-label="getModeLabel"
           >
             <i :class="[getModeIcon, 'text-base', nsfwModeColors]"></i>
           </button>
